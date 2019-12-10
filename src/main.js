@@ -14,7 +14,7 @@ Vue.config.productionTip = false
 
 Vue.prototype.$http = axios
 localStorage.setItem('token','test')  //  Запишем токен в localStorage
-const token = localStorage.getItem('token')
+const token = localStorage.getItem('token') // получим токен из localStorage  
 
 if (token) {
     Vue.prototype.$http.defaults.headers.common['Auth-Token'] = token
