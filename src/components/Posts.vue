@@ -39,8 +39,8 @@ export default {
       })
     }
   },
-  mounted() { // Получаем таблицу с постами
-    axios.get('https://jsonplaceholder.typicode.com/posts')
+  async mounted() { // Получаем таблицу с постами
+    await axios.get('https://jsonplaceholder.typicode.com/posts')
       .then(response => {this.postsList = response.data; this.loading = false})
   }
 }

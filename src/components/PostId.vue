@@ -8,7 +8,7 @@
             <h3>{{product.title}}</h3>
             <p>{{product.body}}</p>
           </b-card-text>
-          <router-link class="nav-link" to="/posts">Назад</router-link>
+          <router-link class="nav-link" to="/Posts">Назад</router-link>
         </b-card>
       </div>
     </div>
@@ -33,8 +33,8 @@ export default {
       checkLocalStoragepost: localStorage.getItem('posts')
     }
   },
-  mounted() {
-    axios.get(`https://jsonplaceholder.typicode.com/posts/?id=${this.proId}`)
+  async mounted() {
+    await axios.get(`https://jsonplaceholder.typicode.com/posts/?id=${this.proId}`)
       .then(response => {
         this.post = response.data;
         this.loading = false;
@@ -44,6 +44,7 @@ export default {
           localStorage.setItem('posts', `${this.localStoragepost}`)
         }
       })
+      .catch(err => (console.log(err)))
   }
 }
 </script>
