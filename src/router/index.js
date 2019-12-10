@@ -10,7 +10,7 @@ export default new Router({
   mode: 'history',
   routes: [{
       path: '/',
-      name: 'home',
+      name: 'Home',
       component: Home
     },
     {
@@ -20,7 +20,7 @@ export default new Router({
     },
     {
      path: '/PostId/:Pid',
-     name: 'details',
+     name: 'PostId',
      component: PostId
     }
   ]

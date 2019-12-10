@@ -2,4 +2,4 @@
 2) перейти в папку проекта
 3) npm i
 4) cd src/
-5) npm run serve
+5) npm run dev

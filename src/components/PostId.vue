@@ -1,51 +1,49 @@
 <template>
-<div class="details">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12" v-for="(product,index) in products" :key="index">
-        <div v-if="proId == product.productId">
-          <h1>{{product.productTitle}}</h1>
-          <img :src="product.image" class="img-fluid">
-        </div>
+  <div class="container my-3">
+    <Loading v-if='loading==true' />
+    <div class="col-md-12" v-for="(product,index) in post" :key="index">
+      <div v-if="proId == product.id">
+        <b-card>
+          <b-card-text>
+            <h3>{{product.title}}</h3>
+            <p>{{product.body}}</p>
+          </b-card-text>
+          <router-link class="nav-link" to="/posts">Назад</router-link>
+        </b-card>
       </div>
     </div>
   </div>
-</div>
 </template>
+
 <script>
+import axios from 'axios'; //Импортируем axios для связи с Бэкендом
+
+import Loading from '../components/Loading.vue'; // Импортируем компонент Загрузки
+
 export default {
-  name: 'details',
+  components: { // Добавим локальные компоненты
+    Loading
+  },
   data() {
     return {
       proId: this.$route.params.Pid,
-      title: "details",
-      products: [{
-          productTitle: "ABCN",
-          productId: 1
-        },
-        {
-          productTitle: "KARMA",
-          productId: 2
-        },
-        {
-          productTitle: "Tino",
-          productId: 3
-        },
-        {
-          productTitle: "EFG",
-          productId: 4
-        },
-        {
-          productTitle: "MLI",
-          productId: 5
-        },
-        {
-          productTitle: "Banans",
-          productId: 6
-        }
-      ]
-
+      post: [], //  Массив для хранения поста
+      loading: true, //  Флажог для условной отрисовки при загрузке данных
+      localStoragepost: '',
+      checkLocalStoragepost: localStorage.getItem('posts')
     }
+  },
+  mounted() {
+    axios.get(`https://jsonplaceholder.typicode.com/posts/?id=${this.proId}`)
+      .then(response => {
+        this.post = response.data;
+        this.loading = false;
+
+        if (!this.checkLocalStoragepost) {
+          this.localStoragepost = JSON.stringify(this.post);
+          localStorage.setItem('posts', `${this.localStoragepost}`)
+        }
+      })
   }
 }
 </script>

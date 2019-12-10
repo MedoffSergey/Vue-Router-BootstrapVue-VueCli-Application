@@ -1,54 +1,47 @@
 <template>
-  <div class="row">
-        <div class="col-md-4 col-lg4" v-for="(data,index) in products" :key="index">
-          <img :src="data.image" class="img-fluid">
-           <h3 @click="goTodetail(data.productId)" >{{data.productTitle}}</h3>
+  <div class="container ">
+    <Loading v-if='loading==true'/> <!--рендерим компонент Загрузки-->
+      <div class="col-md-12 col-lg4 text-center my-3"  v-for="(data,index) in postsList" :key="index">
+        <div>
+          <b-card>
+            <b-card-text>
+              <h3>{{data.title}}</h3>
+            </b-card-text>
+            <b-button  variant="primary" @click="goTodetail(data.id) ">Ознакомиться</b-button>
+          </b-card>
         </div>
       </div>
+  </div>
 </template>
 
 <script>
+import axios from 'axios'; // Импортируем axios для связи с Бэкендом
+
+import Loading from '../components/Loading.vue';  // Импортируем компонент Загрузки
+
 export default {
-  name: 'Posts',
-  data () {
+  components: { // Добавим локальные компоненты
+    Loading
+  },
+  data() {
     return {
-      title: 'Posts',
-      products:[
-      {
-        productTitle:"ABCN",
-        productId:1
-      },
-      {
-        productTitle:"KARMA",
-        productId:2
-      },
-      {
-        productTitle:"Tino",
-        productId:3
-      },
-      {
-        productTitle:"EFG",
-        productId:4
-      },
-      {
-        productTitle:"MLI",
-        productId:5
-      },
-      {
-        productTitle:"Banans",
-        productId:6
-      }
-      ]
+      postsList: [],  //  Массив для хранения постов
+      loading : true  //  Флажог для условной отрисовки при загрузке данных
     }
   },
-  methods:{
+  methods: {
     goTodetail(prodId) {
-      this.$router.push({name:'details',params:{Pid:prodId}})
+      this.$router.push({
+        name: 'PostId',
+        params: {
+          Pid: prodId
+        }
+      })
     }
+  },
+  mounted() { // Получаем таблицу с постами
+    axios.get('https://jsonplaceholder.typicode.com/posts')
+      .then(response => {this.postsList = response.data; this.loading = false})
   }
 }
 </script>
-
-<style scoped>
-
-</style>
